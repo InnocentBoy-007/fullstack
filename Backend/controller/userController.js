@@ -16,12 +16,14 @@ export const create = async (req, res) => {
     }
 }
 
+// fetch the datas from the database
 export const fetch = async (req, res) => {
     try {
         const users = await User.find();
         if (!users) {
             return res.status(404).json({ message: "User not found!" });
         }
+        // if there are datas inside the database, returns 200 and the datas inside the database
         res.status(200).json(users);
     } catch (error) {
         res.status(500).json({ error: "Internal server error!" })

@@ -19,6 +19,13 @@ const PORT = process.env.PORT || 5000;
 // This line sets the MONGOURL variable to the value of the MONGO_URL environment variable.
 const MONGOURL = process.env.MONGO_URL;
 
+// Add CORS headers
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
+
 // This line connects to the MongoDB database using the Mongoose library. The connect method returns a promise that resolves when the connection is successful. The then block is executed when the connection is successful, and the catch block is executed if an error occurs during the connection process.
 mongoose.connect(MONGOURL).then(() => {
     console.log("Database connected successfully")
