@@ -69,14 +69,14 @@ export default function Login() {
                 <input
                   type="text"
                   placeholder="Phone number, username, or email"
-                  className="border-1 border-gray-300 p-1  h-10 rounded-[2px]"
+                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
                   autoFocus
                   onChange={(e) => setEmail(e.target.value)}
                 />
                 <input
                   type="password"
                   placeholder="Password"
-                  className="border-1 border-gray-300 p-1 h-10 rounded-[2px]"
+                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
                   onChange={(e) => setPassword(e.target.value)}
                 />
                 <button
