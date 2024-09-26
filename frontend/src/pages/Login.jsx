@@ -49,21 +49,21 @@ export default function Login() {
   };
 
   return (
-    <section className="sm:flex flex-col h-screen">
+    <section className="md:flex flex-col h-screen">
       <div className="w-full text-center sm:grid grid-cols-2 h-[80%]">
-        <div className="hidden sm:block max-h-[80%]">
+        <div className="hidden md:block max-h-[80%]">
           <img
             src="https://i.pinimg.com/564x/27/4e/cf/274ecfb6bf739aaeb328d689d8e6776a.jpg"
             alt="..."
-            className="sm:ml-auto max-h-[92%] mt-[6%] mr-6 rounded-lg"
+            className="md:ml-auto max-h-[92%] mt-[6%] mr-6 rounded-lg md:max-h-[86%]"
           ></img>
         </div>
-        <div className="flex h-full w-full sm:max-h-[80%]">
-          <div className="sm:w-[50%] my-auto">
-            <div className="flex flex-col items-center  ">
+        <div className="flex h-full w-full md:max-h-[80%]">
+          <div className="md:w-[50%] my-auto">
+            <div className="flex flex-col items-center">
               <img
                 src="https://www.dafont.com/forum/attach/orig/8/1/815933.png?1"
-                className="w-3/5 m-10 sm:w-48"
+                className="w-3/5 m-10 md:w-48"
               ></img>
               <div className="flex-col flex gap-1 w-5/6">
                 <input
@@ -101,8 +101,8 @@ export default function Login() {
                 <p className="text-[0.8rem] mt-3 cursor-pointer">
                   Forgot password?
                 </p>
-                <h1 className="mt-24">
-                  Don't have an account?{" "}
+                <h1 className="mt-24 lg:mt-10">
+                  Don't have an account?&nbsp;
                   <span
                     className="font-bold cursor-pointer hover:text-blue-600"
                     onClick={() => navigate("/signup")}
@@ -112,7 +112,7 @@ export default function Login() {
                   </span>
                 </h1>
               </div>
-              <div className="mt-24">
+              <div className="mt-24 md:mt-20">
                 <p>Get the app</p>
                 <div className="flex gap-2 mt-2">
                   <a
