@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { AiFillFacebook } from "react-icons/ai";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { useNavigate } from "react-router-dom";
@@ -6,18 +6,6 @@ import { auth } from "../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 
 export default function Login() {
-  const [users, setUsers] = useState([]);
-
-  useEffect(() => {
-    fetch("http://localhost:8000/api/user/getAllUsers")
-      .then((response) => response.json())
-      .then((data) => {
-        setUsers(data);
-        console.log(JSON.stringify(data)); // or console.log(data) if you want to log the actual data
-      })
-      .catch((error) => console.error(error));
-  }, []);
-
   const navigate = useNavigate(); // to navigate to other page within the app
 
   const [email, setEmail] = useState(""); // stores the user's email
@@ -30,6 +18,7 @@ export default function Login() {
 
     if (!email || !password) {
       setErrorMessage("You need to provide full infos");
+      console.log("Error Message: " + errorMessage);
     } else {
       await signInWithEmailAndPassword(auth, email, password)
         // logged in
