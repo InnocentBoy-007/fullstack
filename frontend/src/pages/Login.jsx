@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AiFillFacebook } from "react-icons/ai";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import { onAuthStateChanged } from "firebase/auth";
 
 export default function Login() {
   const navigate = useNavigate(); // to navigate to other page within the app
@@ -11,6 +12,15 @@ export default function Login() {
   const [email, setEmail] = useState(""); // stores the user's email
   const [password, setPassword] = useState(""); // stores the user's password
   const [errorMessage, setErrorMessage] = useState(""); // stores the error messages
+
+  // if the user has already logged in, in the previous session, the user will be directed directly to the homepage instead of the loginpage, which is the index page
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        navigate("/homepage");
+      }
+    });
+  }, [auth, navigate]);
 
   // this function allows the user to login using his/her valid email and password
   const logginIn = async (e) => {
