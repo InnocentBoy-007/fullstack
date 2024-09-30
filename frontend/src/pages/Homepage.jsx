@@ -7,13 +7,13 @@ export default function Homepage() {
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
 
+  const apiEndpoint_POST = import.meta.env.VITE_REACT_APP_API_POST;
+  const apiEndpoint_GET = import.meta.env.VITE_REACT_APP_API_GET;
+
   const fetchData = async () => {
     try {
-      const response = await fetch(
-        // `${process.env.REACT_APP_API_URL}/user/getAllUsers` ||
-        "http://localhost:8000/api/user/getAllUsers"
-      );
-      const data = await response.json();
+      const response = await fetch(apiEndpoint_GET);
+      const data = await response.json(); // returns the response in the form of json - JavaScript Object Notation
       setUsers(data);
       console.log(data);
     } catch (error) {
@@ -44,18 +44,16 @@ export default function Homepage() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+
     if (!name || !email || !address) {
       window.alert("All fields required!");
     } else {
       try {
-        const response = await fetch(
-          "http://localhost:8000/api/user/createUser",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ name, email, address }),
-          }
-        );
+        const response = await fetch(apiEndpoint_POST, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, email, address }),
+        });
         const data = await response.json();
         console.log(data);
         // Reset the state variables to empty strings
