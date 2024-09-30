@@ -5,6 +5,8 @@ export const fetch = async (req, res) => {
     try {
         const users = await user.find();
         if (!users) {
+
+            // if there are no datas inside the database, returns 404
             return res.status(404).json({ message: "User not found!" });
         }
         // if there are datas inside the database, returns 200 and the datas inside the database
