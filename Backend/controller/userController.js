@@ -1,4 +1,5 @@
 import user from "../model/userModel.js"
+import buyer from "../model/buyerModel.js"
 
 // fetch the datas from the database
 export const fetch = async (req, res) => {
@@ -11,6 +12,20 @@ export const fetch = async (req, res) => {
         }
         // if there are datas inside the database, returns 200 and the datas inside the database
         res.status(200).json(users); // 200 - OK
+    } catch (error) {
+        res.status(500).json({ error: "Internal server error!" }) // 500 - Internal Server Error
+    }
+};
+export const fetchBuyers = async (req, res) => {
+    try {
+        const buyers = await buyer.find();
+        if (!buyers) {
+
+            // if there are no datas inside the database, returns 404
+            return res.status(404).json({ message: "User not found!" });
+        }
+        // if there are datas inside the database, returns 200 and the datas inside the database
+        res.status(200).json(buyers); // 200 - OK
     } catch (error) {
         res.status(500).json({ error: "Internal server error!" }) // 500 - Internal Server Error
     }

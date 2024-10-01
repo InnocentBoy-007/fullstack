@@ -12,7 +12,15 @@ export default function Homepage() {
 
   const fetchData = async () => {
     try {
-      const response = await fetch(apiEndpoint_GET);
+      const primary_response_GET = apiEndpoint_GET;
+      const backup_response_GET = "backup endpoint";
+      let response;
+      try {
+        response = await fetch(primary_response_GET); // fetching this endpoint first
+      } catch (error) {
+        response = await fetch(backup_response_GET); // if the primary endpoint don't work, fetching the backup endpoint
+        console.log(error);
+      }
       const data = await response.json(); // returns the response in the form of json - JavaScript Object Notation
       setUsers(data);
       console.log(data);
