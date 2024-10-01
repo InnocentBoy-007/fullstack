@@ -13,15 +13,6 @@ export default function Login() {
   const [password, setPassword] = useState(""); // stores the user's password
   const [errorMessage, setErrorMessage] = useState(""); // stores the error messages
 
-  // if the user has already logged in, in the previous session, the user will be directed directly to the homepage instead of the loginpage, which is the index page
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        navigate("/homepage");
-      }
-    });
-  }, [auth, navigate]);
-
   // this function allows the user to login using his/her valid email and password
   const logginIn = async (e) => {
     e.preventDefault();
@@ -35,7 +26,7 @@ export default function Login() {
         .then((userCredentials) => {
           const user = userCredentials.user;
           console.log("User details---> ", user);
-          navigate("/homepage");
+          navigate("/");
         })
 
         // error handler

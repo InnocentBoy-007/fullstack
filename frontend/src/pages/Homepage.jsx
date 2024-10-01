@@ -1,4 +1,6 @@
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import React, { useState, useEffect } from "react";
+import { auth } from "../firebase";
 
 export default function Homepage() {
   const [users, setUsers] = useState([]);
@@ -75,6 +77,18 @@ export default function Homepage() {
     }
   };
 
+  const handleLogout = () => {
+    signOut(auth)
+      .then(() => {
+        // Sign-out successful.
+        console.log("Signed out successfully");
+      })
+      .catch((error) => {
+        // An error happened.
+        console.error(error);
+      });
+  };
+
   return (
     <div className="p-4">
       <table className="w-full text-center">
@@ -123,6 +137,9 @@ export default function Homepage() {
         onClick={onSubmit}
       >
         Send
+      </button>
+      <button onClick={handleLogout} style={{ border: "2px solid red" }}>
+        Log out
       </button>
     </div>
   );
