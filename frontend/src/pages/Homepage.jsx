@@ -1,4 +1,4 @@
-import { onAuthStateChanged, signOut } from "firebase/auth";
+import { signOut } from "firebase/auth";
 import React, { useState, useEffect } from "react";
 import { auth } from "../firebase";
 
@@ -11,6 +11,9 @@ export default function Homepage() {
 
   const apiEndpoint_POST = import.meta.env.VITE_REACT_APP_API_POST;
   const apiEndpoint_GET = import.meta.env.VITE_REACT_APP_API_GET;
+  const apiEndpoint_GETBuyers = import.meta.env.VITE_REACT_APP_API_GETBUYERS;
+
+  const [buyerList, setBuyerList] = useState([]);
 
   const fetchData = async () => {
     try {
@@ -26,6 +29,20 @@ export default function Homepage() {
       const data = await response.json(); // returns the response in the form of json - JavaScript Object Notation
       setUsers(data);
       console.log(data);
+
+      // fetching buyer's data
+      const primaryBuyerEndpoint = apiEndpoint_GETBuyers;
+      const backupBuyerEndpoint = "backup endpoint";
+      let buyerResponse;
+      try {
+        buyerResponse = await fetch(primaryBuyerEndpoint);
+      } catch (error) {
+        buyerResponse = await fetch(backupBuyerEndpoint);
+        console.log(error);
+      }
+      const buyerData = await buyerResponse.json();
+      setBuyerList(buyerData);
+      console.log("Buyer Data---> ", buyerData);
     } catch (error) {
       if (error.response) {
         // The request was made and the server responded with a status code
@@ -78,7 +95,7 @@ export default function Homepage() {
   };
 
   const handleLogout = () => {
-    signOut(auth)
+    signOut(auth) // signs out the current user
       .then(() => {
         // Sign-out successful.
         console.log("Signed out successfully");
@@ -110,6 +127,17 @@ export default function Homepage() {
         </tbody>
       </table>
       <h2>This is home page</h2>
+      {buyerList.map((item, index) => (
+        <div key={index}>
+          <div className="flex gap-2 flex-wrap">
+            <p>{index + 1}</p>
+            <p>{item._id}</p>
+            <p>{item.name}</p>
+            <p>{item.email}</p>
+            <p>{item.address}</p>
+          </div>
+        </div>
+      ))}
       <input
         type="text"
         placeholder="Name"
