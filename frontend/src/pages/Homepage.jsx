@@ -83,13 +83,12 @@ export default function Homepage() {
       window.alert("All fields required!");
     } else {
       try {
-        const response = await fetch(apiEndpoint_POST, {
-          method: "POST",
+        const data = { name, email, address };
+        const response = await axios.post(apiEndpoint_POST, data, {
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name, email, address }),
         });
-        const data = await response.json();
-        console.log(data);
+        const postdata = response.data;
+        console.log(postdata);
         // Reset the state variables to empty strings
         setName("");
         setEmail("");
