@@ -1,18 +1,20 @@
 import { signOut } from "firebase/auth";
 import React, { useState, useEffect } from "react";
 import { auth } from "../firebase";
+import axios from "axios";
 
 export default function Homepage() {
-  const [users, setUsers] = useState([]);
   const [errorMssg, setErrorMssg] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
 
   const apiEndpoint_POST = import.meta.env.VITE_REACT_APP_API_POST;
+
   const apiEndpoint_GET = import.meta.env.VITE_REACT_APP_API_GET;
   const apiEndpoint_GETBuyers = import.meta.env.VITE_REACT_APP_API_GETBUYERS;
 
+  const [users, setUsers] = useState([]);
   const [buyerList, setBuyerList] = useState([]);
 
   const fetchData = async () => {
@@ -20,27 +22,32 @@ export default function Homepage() {
       const primary_response_GET = apiEndpoint_GET;
       const backup_response_GET = "backup endpoint";
       let response;
+
       try {
-        response = await fetch(primary_response_GET); // fetching this endpoint first
+        response = await axios.get(primary_response_GET); // fetching this endpoint first
       } catch (error) {
-        response = await fetch(backup_response_GET); // if the primary endpoint don't work, fetching the backup endpoint
+        response = await axios.get(backup_response_GET); // if the primary endpoint don't work, fetching the backup endpoint
         console.log(error);
       }
-      const data = await response.json(); // returns the response in the form of json - JavaScript Object Notation
-      setUsers(data);
-      console.log(data);
+
+      // axios automatically parses the data into json format
+      const userDatas = response.data; // returns the response in the form of json - JavaScript Object Notation
+      setUsers(userDatas);
+      console.log(userDatas);
 
       // fetching buyer's data
       const primaryBuyerEndpoint = apiEndpoint_GETBuyers;
       const backupBuyerEndpoint = "backup endpoint";
       let buyerResponse;
+
       try {
-        buyerResponse = await fetch(primaryBuyerEndpoint);
+        buyerResponse = await axios.get(primaryBuyerEndpoint);
       } catch (error) {
-        buyerResponse = await fetch(backupBuyerEndpoint);
+        buyerResponse = await axios.get(backupBuyerEndpoint);
         console.log(error);
       }
-      const buyerData = await buyerResponse.json();
+
+      const buyerData = buyerResponse.data;
       setBuyerList(buyerData);
       console.log("Buyer Data---> ", buyerData);
     } catch (error) {
