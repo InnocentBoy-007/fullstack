@@ -42,3 +42,25 @@ export const create = async (req, res) => {
         res.status(400).json({ error: "Invalid request!" }); // 400 - Bad Request
     }
 };
+
+// update user info
+export const update = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { name, email, address } = req.body;
+
+        // Find the user by ID and update the document
+        const updatedUser = await user.findByIdAndUpdate(id, { name, email, address }, { new: true });
+
+        if (!updatedUser) {
+            // If the user is not found, return 404
+            return res.status(404).json({ message: "User not found!" });
+        }
+
+        // Return the updated user info
+        res.status(200).json(updatedUser);
+    } catch (error) {
+        // If there's an error, return 500
+        res.status(500).json({ error: "Internal server error!" });
+    }
+};
