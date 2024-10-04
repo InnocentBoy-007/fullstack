@@ -6,12 +6,12 @@ import { getAuth } from "firebase/auth";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyCmieM7pTbV4agpe_QyVoy-6UuV5IOVkek",
-    authDomain: "instagram-ib.firebaseapp.com",
-    projectId: "instagram-ib",
-    storageBucket: "instagram-ib.appspot.com",
-    messagingSenderId: "458261623475",
-    appId: "1:458261623475:web:debebfac685160bd5d36c6"
+    apiKey: import.meta.env.VITE_REACT_APP_FIREBASE_API_KEY,
+    authDomain: import.meta.env.VITE_REACT_APP_FIREBASE_AUTH_DOMAIN,
+    projectId: import.meta.env.VITE_REACT_APP_FIREBASE_PROJECT_ID,
+    storageBucket: import.meta.env.VITE_REACT_APP_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: import.meta.env.REACT_APP_VITE_MESSAGING_SENDER_ID,
+    appId: import.meta.env.VITE_REACT_APP_APP_ID
 };
 
 // Initialize Firebase
