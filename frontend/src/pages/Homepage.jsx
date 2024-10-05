@@ -112,6 +112,30 @@ export default function Homepage() {
       });
   };
 
+  const deleteUsers = async (id) => {
+    if (!id) {
+      console.log("ID not provided!");
+      return; // Return early to prevent API call
+    }
+
+    console.log("ID--->", id);
+
+    const deleteUrl = `${import.meta.env.VITE_REACT_APP_API_DELETEUSERS}/${id}`;
+    try {
+      const response = await axios.delete(deleteUrl, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const deletedUserData = response.data;
+      console.log(deletedUserData);
+      setUsers(users.filter((user) => user.id !== id));
+      fetchData();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="p-4">
       <table className="w-full text-center">
@@ -120,6 +144,7 @@ export default function Homepage() {
             <th>Name</th>
             <th>Email</th>
             <th>Address</th>
+            <th>Delete</th>
           </tr>
         </thead>
         <tbody>
@@ -128,6 +153,14 @@ export default function Homepage() {
               <td>{item.name}</td>
               <td>{item.email}</td>
               <td>{item.address}</td>
+              <td>
+                <button
+                  style={{ border: "2px solid red" }}
+                  onClick={() => deleteUsers(item._id)}
+                >
+                  Delete
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>

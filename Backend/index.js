@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import dotenv from "dotenv"
 import route from "./Route/userRoute.js";
+import cors from 'cors';
 
 // This line creates a new Express.js application instance and assigns it to the app variable.
 const app = express();
@@ -17,11 +18,18 @@ dotenv.config();
 const PORT = process.env.PORT || 5000;
 
 // Add CORS headers
-app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-});
+// app.use((req, res, next) => {
+//     res.header("Access-Control-Allow-Origin", "*");
+//     res.header("Access-Control-Allow-Methods", "DELETE, GET, POST, PUT, OPTIONS");
+//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//     next();
+// });
+
+app.use(cors({
+    origin: '*',
+    methods: ['DELETE, GET, POST, PUT, OPTIONS'],
+    headers: ['Origin, X-Requested-Width, Content-Type, Accept']
+}));
 
 // This line sets the MONGOURL variable to the value of the MONGO_URL environment variable.
 const MONGOURL = process.env.MONGO_URL;
