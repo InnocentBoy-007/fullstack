@@ -9,17 +9,18 @@ export default function Homepage() {
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
 
-  const apiEndpoint_POST = import.meta.env.VITE_REACT_APP_API_POST;
-
-  const apiEndpoint_GET = import.meta.env.VITE_REACT_APP_API_GET;
-  const apiEndpoint_GETBuyers = import.meta.env.VITE_REACT_APP_API_GETBUYERS;
+  const apiEndpoint_POST = `${
+    import.meta.env.VITE_REACT_APP_API_ENDPOINT
+  }/createUser`;
 
   const [users, setUsers] = useState([]);
   const [buyerList, setBuyerList] = useState([]);
 
   const fetchData = async () => {
     try {
-      const primary_response_GET = apiEndpoint_GET;
+      const primary_response_GET = `${
+        import.meta.env.VITE_REACT_APP_API_ENDPOINT
+      }/getAllUsers`;
       const backup_response_GET = "backup endpoint";
       let response;
 
@@ -36,7 +37,9 @@ export default function Homepage() {
       console.log(userDatas);
 
       // fetching buyer's data
-      const primaryBuyerEndpoint = apiEndpoint_GETBuyers;
+      const primaryBuyerEndpoint = `${
+        import.meta.env.VITE_REACT_APP_API_ENDPOINT
+      }/getAllBuyers`;
       const backupBuyerEndpoint = "backup endpoint";
       let buyerResponse;
 
@@ -118,9 +121,11 @@ export default function Homepage() {
       return; // Return early to prevent API call
     }
 
-    console.log("ID--->", id);
+    console.log("ID--->", id); // Making sure if the id is correct or not
 
-    const deleteUrl = `${import.meta.env.VITE_REACT_APP_API_DELETEUSERS}/${id}`;
+    const deleteUrl = `${
+      import.meta.env.VITE_REACT_APP_API_ENDPOINT
+    }/deleteUser/${id}`;
     try {
       const response = await axios.delete(deleteUrl, {
         headers: {

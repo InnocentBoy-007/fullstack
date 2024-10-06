@@ -1,7 +1,7 @@
 import user from "../model/userModel.js"
 import buyer from "../model/buyerModel.js"
 
-// fetch the datas from the database
+// Fetch the user datas from the database
 export const fetch = async (req, res) => {
     try {
         const users = await user.find();
@@ -16,6 +16,8 @@ export const fetch = async (req, res) => {
         res.status(500).json({ error: "Internal server error!" }) // 500 - Internal Server Error
     }
 };
+
+// Function to fetch the buyers from the database
 export const fetchBuyers = async (req, res) => {
     try {
         const buyers = await buyer.find();
@@ -66,7 +68,7 @@ export const update = async (req, res) => {
 };
 
 // delete the user info
-export const deleteInfo = async (req, res, id) => {
+export const deleteInfo = async (req, res) => {
     try {
         const { id } = req.params;
 
@@ -78,7 +80,7 @@ export const deleteInfo = async (req, res, id) => {
         }
 
         // Return the updated user info
-        res.status(200).json({ message: "User   deleted successfully!", deletedUser });
+        res.status(200).json({ message: "User deleted successfully!", deletedUser });
     } catch (error) {
         res.status(500).json({ error: "Internal server error!" });
     }
