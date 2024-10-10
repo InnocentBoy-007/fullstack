@@ -142,11 +142,37 @@ export default function Homepage() {
   };
 
   const [storeEditUsers, setStoreEditUsers] = useState([]);
-  const [handleEditUsers, setHandleEditUsers] = useState(false);
+  const [userId, setUserId] = useState("");
+  const [editFlag, setEditFlag] = useState(false);
 
-  const updateUsers = async (e) => {
-    e.preventDefault();
-    console.log(JSON.stringify(storeEditUsers));
+  const handleEditUsers = (item) => {
+    setUserId(item._id);
+    setStoreEditUsers(item);
+    setEditFlag(true);
+  };
+
+  const updateUsers = async (id) => {
+    const updateUrl = `${
+      import.meta.env.VITE_REACT_APP_API_ENDPOINT
+    }/updateUser/${userId}`;
+    try {
+      const response = await axios.put(updateUrl, storeEditUsers, {
+        method: {
+          "content-type": "application/json",
+        },
+      });
+      const responseData = response.data;
+      //   console.log(responseData); //
+      fetchData();
+      setName("");
+      setEmail("");
+      setAddress("");
+      setUserId("");
+      setEditFlag(false);
+      window.alert("Updated successfully!");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -178,10 +204,7 @@ export default function Homepage() {
               <td>
                 <button
                   style={{ border: "2px solid red" }}
-                  onClick={() => {
-                    setHandleEditUsers(true);
-                    setStoreEditUsers(item);
-                  }}
+                  onClick={() => handleEditUsers(item)}
                 >
                   Edit
                 </button>
@@ -206,9 +229,9 @@ export default function Homepage() {
         type="text"
         placeholder="Name"
         className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 mt-2"
-        value={handleEditUsers ? storeEditUsers.name : name}
+        value={editFlag ? storeEditUsers.name : name}
         onChange={(e) => {
-          handleEditUsers
+          editFlag
             ? setStoreEditUsers({ ...storeEditUsers, name: e.target.value })
             : setName(e.target.value);
         }}
@@ -217,9 +240,9 @@ export default function Homepage() {
         type="text"
         placeholder="Email"
         className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 mt-2"
-        value={handleEditUsers ? storeEditUsers.email : email}
+        value={editFlag ? storeEditUsers.email : email}
         onChange={(e) => {
-          handleEditUsers
+          editFlag
             ? setStoreEditUsers({ ...storeEditUsers, email: e.target.value })
             : setEmail(e.target.value);
         }}
@@ -228,19 +251,19 @@ export default function Homepage() {
         type="text"
         placeholder="Address"
         className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 mt-2"
-        value={handleEditUsers ? storeEditUsers.address : address}
+        value={editFlag ? storeEditUsers.address : address}
         onChange={(e) => {
-          handleEditUsers
+          editFlag
             ? setStoreEditUsers({ ...storeEditUsers, address: e.target.value })
             : setAddress(e.target.value);
         }}
       />
-      {handleEditUsers ? (
+      {editFlag ? (
         <>
           <button
             type="submit"
             className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 mt-2"
-            onClick={updateUsers}
+            onClick={() => updateUsers(userId)}
           >
             Update
           </button>
