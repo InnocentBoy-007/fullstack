@@ -34,7 +34,7 @@ export default function Homepage() {
       // axios automatically parses the data into json format
       const userDatas = response.data; // returns the response in the form of json - JavaScript Object Notation
       setUsers(userDatas);
-      console.log(userDatas);
+      //   console.log(userDatas);
 
       // fetching buyer's data
       const primaryBuyerEndpoint = `${
@@ -52,7 +52,7 @@ export default function Homepage() {
 
       const buyerData = buyerResponse.data;
       setBuyerList(buyerData);
-      console.log("Buyer Data---> ", buyerData);
+      //   console.log("Buyer Data---> ", buyerData);
     } catch (error) {
       if (error.response) {
         // The request was made and the server responded with a status code
@@ -90,8 +90,8 @@ export default function Homepage() {
         const response = await axios.post(apiEndpoint_POST, data, {
           headers: { "Content-Type": "application/json" },
         });
-        const postdata = response.data;
-        console.log(postdata);
+        // const postdata = response.data;
+        // console.log(postdata);
         // Reset the state variables to empty strings
         setName("");
         setEmail("");
@@ -121,7 +121,7 @@ export default function Homepage() {
       return; // Return early to prevent API call
     }
 
-    console.log("ID--->", id); // Making sure if the id is correct or not
+    // console.log("ID--->", id); // Making sure if the id is correct or not
 
     const deleteUrl = `${
       import.meta.env.VITE_REACT_APP_API_ENDPOINT
@@ -133,12 +133,20 @@ export default function Homepage() {
         },
       });
       const deletedUserData = response.data;
-      console.log(deletedUserData);
+      //   console.log(deletedUserData);
       setUsers(users.filter((user) => user.id !== id));
       fetchData();
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const [storeEditUsers, setStoreEditUsers] = useState([]);
+  const [handleEditUsers, setHandleEditUsers] = useState(false);
+
+  const updateUsers = async (e) => {
+    e.preventDefault();
+    console.log(JSON.stringify(storeEditUsers));
   };
 
   return (
@@ -150,6 +158,7 @@ export default function Homepage() {
             <th>Email</th>
             <th>Address</th>
             <th>Delete</th>
+            <th>Edit</th>
           </tr>
         </thead>
         <tbody>
@@ -164,6 +173,17 @@ export default function Homepage() {
                   onClick={() => deleteUsers(item._id)}
                 >
                   Delete
+                </button>
+              </td>
+              <td>
+                <button
+                  style={{ border: "2px solid red" }}
+                  onClick={() => {
+                    setHandleEditUsers(true);
+                    setStoreEditUsers(item);
+                  }}
+                >
+                  Edit
                 </button>
               </td>
             </tr>
@@ -186,30 +206,57 @@ export default function Homepage() {
         type="text"
         placeholder="Name"
         className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 mt-2"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
+        value={handleEditUsers ? storeEditUsers.name : name}
+        onChange={(e) => {
+          handleEditUsers
+            ? setStoreEditUsers({ ...storeEditUsers, name: e.target.value })
+            : setName(e.target.value);
+        }}
       />
       <input
         type="text"
         placeholder="Email"
         className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 mt-2"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
+        value={handleEditUsers ? storeEditUsers.email : email}
+        onChange={(e) => {
+          handleEditUsers
+            ? setStoreEditUsers({ ...storeEditUsers, email: e.target.value })
+            : setEmail(e.target.value);
+        }}
       />
       <input
         type="text"
         placeholder="Address"
         className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 mt-2"
-        value={address}
-        onChange={(e) => setAddress(e.target.value)}
+        value={handleEditUsers ? storeEditUsers.address : address}
+        onChange={(e) => {
+          handleEditUsers
+            ? setStoreEditUsers({ ...storeEditUsers, address: e.target.value })
+            : setAddress(e.target.value);
+        }}
       />
-      <button
-        type="submit"
-        className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 mt-2"
-        onClick={onSubmit}
-      >
-        Send
-      </button>
+      {handleEditUsers ? (
+        <>
+          <button
+            type="submit"
+            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 mt-2"
+            onClick={updateUsers}
+          >
+            Update
+          </button>
+        </>
+      ) : (
+        <>
+          <button
+            type="submit"
+            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 mt-2"
+            onClick={onSubmit}
+          >
+            Send
+          </button>
+        </>
+      )}
+
       <button onClick={handleLogout} style={{ border: "2px solid red" }}>
         Log out
       </button>
