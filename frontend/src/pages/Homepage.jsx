@@ -16,6 +16,13 @@ export default function Homepage() {
   const [users, setUsers] = useState([]);
   const [buyerList, setBuyerList] = useState([]);
 
+  // resets the hooks
+  const resetForm = () => {
+    setName("");
+    setEmail("");
+    setAddress("");
+  };
+
   const fetchData = async () => {
     try {
       const primary_response_GET = `${
@@ -92,11 +99,8 @@ export default function Homepage() {
         });
         // const postdata = response.data;
         // console.log(postdata);
-        // Reset the state variables to empty strings
-        setName("");
-        setEmail("");
-        setAddress("");
-        fetchData();
+        fetchData(); // fetch the updated datas
+        resetForm(); // Reset the state variables to empty strings
       } catch (error) {
         console.error(error);
       }
@@ -161,13 +165,11 @@ export default function Homepage() {
           "content-type": "application/json",
         },
       });
-      const responseData = response.data;
-      //   console.log(responseData); //
-      fetchData();
-      setName("");
-      setEmail("");
-      setAddress("");
-      setUserId("");
+      // const responseData = response.data;
+      // console.log(responseData); //
+      fetchData(); // fetch the updated datas
+      resetForm(); // reset the state variables to empty strings
+      setUserId(""); // reset the userId state variable to empty string
       setEditFlag(false);
       window.alert("Updated successfully!");
     } catch (error) {

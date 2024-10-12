@@ -25,7 +25,8 @@ export default function Login() {
         // logged in
         .then((userCredentials) => {
           const user = userCredentials.user;
-          console.log("User details---> ", user);
+          console.log("Login successfully!");
+          //   console.log("User details---> ", user);
           navigate("/");
         })
 
