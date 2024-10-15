@@ -44,6 +44,8 @@ mongoose.connect(MONGOURL)
             console.log(`Server is listening on port ${PORT}`);
         })
     }).catch((error) => console.log(error))
-
+    .finally(() => {
+        console.log("Database connection process is done!");
+    })
 // This line mounts the userRoute module at the '/api/user' path. Any requests to this path will be handled by the userRoute module.
 app.use("/api/user", route);
