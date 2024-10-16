@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { AiFillFacebook } from "react-icons/ai";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { updateProfile } from "firebase/auth";
-import { auth } from "../firebase";
+import { register } from "../services/auth";
 import { useNavigate } from "react-router-dom";
 
 export default function Signup() {
@@ -19,23 +17,8 @@ export default function Signup() {
     e.preventDefault();
 
     try {
-      if (!email || !fullname || !username || !password) {
-        setErrorMessage("Provide a valid details!");
-      } else {
-        await createUserWithEmailAndPassword(auth, email, password).then(
-          (usreCredentials) => {
-            const user = usreCredentials.user;
-            console.log("User details---> ", user);
-            updateProfile(user, {
-              displayName: username,
-            }).then(() => {
-              setTimeout(() => {
-                navigate("/homepage");
-              }, 1000);
-            });
-          }
-        );
-      }
+      await register(fullname, email, password, ""); // Address is empty string here
+      navigate("/login");
     } catch (error) {
       if (error.response) {
         setErrorMessage("Error: ", error.response.status) +

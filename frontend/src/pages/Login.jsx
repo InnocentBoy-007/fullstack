@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { AiFillFacebook } from "react-icons/ai";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { useNavigate } from "react-router-dom";
-import { auth } from "../firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { onAuthStateChanged } from "firebase/auth";
+import { login } from "../services/auth";
 
 export default function Login() {
   const navigate = useNavigate(); // to navigate to other page within the app
@@ -17,25 +15,11 @@ export default function Login() {
   const logginIn = async (e) => {
     e.preventDefault();
 
-    if (!email || !password) {
-      setErrorMessage("You need to provide full infos");
-      console.log("Error Message: " + errorMessage);
-    } else {
-      await signInWithEmailAndPassword(auth, email, password)
-        // logged in
-        .then((userCredentials) => {
-          const user = userCredentials.user;
-          console.log("Login successfully!");
-          //   console.log("User details---> ", user);
-          navigate("/");
-        })
-
-        // error handler
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          console.log("Error message-->", errorMessage + ". " + errorCode);
-        });
+    try {
+      await login(email, password);
+      navigate("/");
+    } catch (error) {
+      setErrorMessage(error.response?.data?.msg || "An error occurred");
     }
   };
 

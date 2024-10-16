@@ -1,5 +1,6 @@
 import user from "../model/userModel.js"
 import buyer from "../model/buyerModel.js"
+import bcrypt from 'bcrypt'
 
 // Fetch the user datas from the database
 export const fetch = async (req, res) => {
@@ -83,5 +84,48 @@ export const deleteInfo = async (req, res) => {
         res.status(200).json({ message: "User deleted successfully!", deletedUser });
     } catch (error) {
         res.status(500).json({ error: "Internal server error!" });
+    }
+};
+
+export const register = async (req, res) => {
+    try {
+        const { name, email, password, address } = req.body;
+        let existingUser = await user.findOne({ email });
+        if (existingUser) {
+            return res.status(400).json({ msg: 'User already exists' });
+        }
+        const newUser = new user({ name, email, password, address });
+        await newUser.save();
+        const payload = { user: { id: newUser.id } };
+        jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' }, (err, token) => {
+            if (err) {
+                throw err;
+            }
+            res.json({ token });
+        });
+    } catch (error) {
+        res.status(500).json({ error: "Server error" });
+    }
+};
+export const login = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        let existingUser = await user.findOne({ email });
+        if (!existingUser) {
+            return res.status(400).json({ msg: 'Invalid credentials' });
+        }
+        const isMatch = await bcrypt.compare(password, existingUser.password);
+        if (!isMatch) {
+            return res.status(400).json({ msg: 'Invalid credentials' });
+        }
+        const payload = { user: { id: existingUser.id } };
+        jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' }, (err, token) => {
+            if (err) {
+                throw err;
+            }
+            res.json({ token });
+        });
+    } catch (error) {
+        res.status(500).json({ error: "Server error" });
     }
 };
