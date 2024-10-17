@@ -17,19 +17,7 @@ dotenv.config();
 // This line sets the PORT variable to the value of the 'PORT' environment variable, or defaults to '5000' if the environment variable is not set.
 const PORT = process.env.PORT || 5000;
 
-// Add CORS headers
-// app.use((req, res, next) => {
-//     res.header("Access-Control-Allow-Origin", "*");
-//     res.header("Access-Control-Allow-Methods", "DELETE, GET, POST, PUT, OPTIONS");
-//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//     next();
-// });
-
-app.use(cors({
-    origin: '*',
-    methods: ['DELETE, GET, POST, PUT, OPTIONS, PATCH'],
-    headers: ['Origin, X-Requested-Width, Content-Type, Accept']
-}));
+app.use(cors());
 
 // This line sets the MONGOURL variable to the value of the MONGO_URL environment variable.
 const MONGOURL = process.env.MONGO_URL;
